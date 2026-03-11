@@ -197,12 +197,14 @@ flutter build apk --release
 
 ---
 
-## 📸 Screenshots
+## 📸 Screenshots & Video
 
 > Place screenshots in a `/screenshots/` folder and update the paths below.
 
 | Splash | Contacts | Favorites | Profile | Add Contact | Delete Dialog |
 |---|---|---|---|---|---|
 | ![splash](screenshots/splash.png) | ![contacts](screenshots/contacts.png) | ![favorites](screenshots/favorites.png) | ![profile](screenshots/profile.png) | ![add](screenshots/add.png) | ![delete](screenshots/delete.png) |
+
+https://github.com/user-attachments/assets/ce9c739e-3c85-4e0a-b545-b789825f6f3e
 
 ---
