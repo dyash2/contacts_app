@@ -21,15 +21,15 @@ A **Google Contacts-inspired** mobile application built with **Flutter**, follow
 
 ---
 
-## 🏗️ Architecture — MVC + Provider
+# 🏗️ Architecture — MVC + Provider
 
 This project strictly separates concerns across three layers:
 
 ```
 ┌─────────────────────────────────────────────┐
 │                   VIEW                       │
-│  Screens & Widgets (Flutter UI only)         │
-│  context.watch / context.read                │
+│  Screens & Widgets (Flutter UI only)        │
+│  context.watch / context.read               │
 └───────────────────┬─────────────────────────┘
                     │ delegates to
 ┌───────────────────▼─────────────────────────┐
@@ -51,57 +51,56 @@ This project strictly separates concerns across three layers:
 └─────────────────────────────────────────────┘
 ```
 
+---
 
-## 📁 Project Structure
+# 📁 Project Structure
 
 ```
 contacts_app/
 ├── android/
-│   └── app/src/main/AndroidManifest.xml     # CALL_PHONE permission + tel:/mailto: queries
+│   └── app/src/main/AndroidManifest.xml
 ├── lib/
-│   ├── main.dart                            # App entry point
+│   ├── main.dart
 │   ├── models/
-│   │   └── contact_model.dart               # Contact data class
+│   │   └── contact_model.dart
 │   ├── controllers/
-│   │   └── contact_controller.dart          # Pure business logic
+│   │   └── contact_controller.dart
 │   ├── providers/
-│   │   └── contact_provider.dart            # ChangeNotifier state management
+│   │   └── contact_provider.dart
 │   ├── views/
 │   │   ├── screens/
-│   │   │   ├── splash_screen.dart           # Animated launch screen
-│   │   │   ├── home_screen.dart             # BottomNav host + search bar
-│   │   │   ├── contacts_tab.dart            # All contacts, grouped A–Z
-│   │   │   ├── favorites_tab.dart           # Starred contacts
-│   │   │   ├── contact_detail_screen.dart   # Profile screen
-│   │   │   └── add_edit_contact_screen.dart # Add / Edit form
+│   │   │   ├── splash_screen.dart
+│   │   │   ├── home_screen.dart
+│   │   │   ├── contacts_tab.dart
+│   │   │   ├── favorites_tab.dart
+│   │   │   ├── contact_detail_screen.dart
+│   │   │   └── add_edit_contact_screen.dart
 │   │   └── widgets/
-│   │       ├── contact_avatar.dart          # Coloured initials avatar
-│   │       ├── contact_list_tile.dart       # Reusable list row
-│   │       └── confirm_dialog.dart          # Generic confirmation dialog
+│   │       ├── contact_avatar.dart
+│   │       ├── contact_list_tile.dart
+│   │       └── confirm_dialog.dart
 │   └── utils/
-│       ├── app_theme.dart                   # Material 3 theme + colour palette
-│       └── database_helper.dart             # SQLite CRUD singleton
+│       ├── app_theme.dart
+│       └── database_helper.dart
 ├── pubspec.yaml
 └── README.md
 ```
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
 | Package | Version | Purpose |
 |---|---|---|
-| `provider` | ^6.1.1 | State management — `ChangeNotifier` binding |
+| `provider` | ^6.1.1 | State management |
 | `sqflite` | ^2.3.2 | SQLite local database |
 | `path` | ^1.9.0 | DB file path resolution |
-| `url_launcher` | ^6.2.5 | `tel:` dialer and `mailto:` email intents |
-| `permission_handler` | ^11.3.0 | Runtime `CALL_PHONE` permission |
-
-> All models use hand-written `toMap()` / `fromMap()` — **no** `json_serializable`, **no** `build_runner`.
+| `url_launcher` | ^6.2.5 | Phone & email intents |
+| `permission_handler` | ^11.3.0 | Runtime phone permission |
 
 ---
 
-## 🗄️ Database Schema
+# 🗄️ Database Schema
 
 ```sql
 CREATE TABLE contacts (
@@ -112,99 +111,86 @@ CREATE TABLE contacts (
   address      TEXT,
   company      TEXT,
   notes        TEXT,
-  is_favorite  INTEGER NOT NULL DEFAULT 0,   -- 0 = false, 1 = true
-  avatar_color TEXT                          -- AARRGGBB hex e.g. FF3D5A99
+  is_favorite  INTEGER NOT NULL DEFAULT 0,
+  avatar_color TEXT
 );
 ```
 
-Duplicate detection query (runs before every insert/update):
+Duplicate detection query:
 
 ```sql
 SELECT id FROM contacts
-WHERE name = ? AND phone = ? AND id != ?   -- id != ? excluded when editing
+WHERE name = ? AND phone = ? AND id != ?
 LIMIT 1;
 ```
 
 ---
 
-## 🚀 Installation & Setup
+# 🚀 Installation & Setup
 
 ### Prerequisites
 
-- Flutter SDK **≥ 3.0.0** → [install guide](https://docs.flutter.dev/get-started/install)
-- Dart SDK **≥ 3.0.0** (bundled with Flutter)
-- Android Studio **or** VS Code with the Flutter & Dart plugins
-- Android device / emulator (API **21+**) or iOS device / simulator (iOS **12+**)
+- Flutter SDK ≥ 3.0
+- Android Studio or VS Code
+- Android Emulator or Device
 
 ### Steps
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/<your-username>/contacts_app.git
+git clone https://github.com/dyash2/contacts_app.git
 cd contacts_app
 
-# 2. Install dependencies
 flutter pub get
 
-# 3. Run in debug mode on a connected device or emulator
 flutter run
-
-# 4. Build a release APK
-flutter build apk --release
-# Output: build/app/outputs/flutter-apk/app-release.apk
 ```
 
-> **Android note:** The app requests `CALL_PHONE` permission at runtime when the user first taps **Call**. Grant it to enable direct dialling.
+Build APK:
+
+```bash
+flutter build apk --release
+```
+
+Output:
+
+```
+build/app/outputs/flutter-apk/app-release.apk
+```
 
 ---
 
-## 📱 Screen-by-Screen Usage
+# 📥 Download APK
 
-### Splash Screen
-- Animated logo shown on launch.
-- Auto-navigates to Home after 400 milliseconds.
+<p align="center">
+  <a href="https://github.com/dyash2/contacts_app/releases/download/v1.0.0/app-release.apk">
+    <img src="https://img.shields.io/badge/Download-APK-blue?style=for-the-badge&logo=android">
+  </a>
+</p>
 
-### Home — Contacts Tab
-- Displays all contacts grouped **A–Z** with section headers.
-- **Search bar** (below app bar) — tap to activate; filters by name, phone, or email in real time.
-- Tap the **＋ FAB** to open the Add Contact form (FAB is hidden on the Favorites tab).
-- Tap any row to open the Contact Profile.
+Direct link:
 
-### Home — Favorites Tab
-- Lists only starred contacts.
-- Search bar works here too — filters favorites by name, phone, or email.
-- FAB is hidden on this tab.
-
-### Contact Profile
-- Shows avatar, name, and action buttons: **Call · Email**.
-- **Details** section: Mobile, Email, Company, Address, Notes.
-- **Favorite toggle** — star icon at the appbar.
-- **⋮ menu** in the app bar also provides Edit and Delete options.
-
-### Add Contact
-- Required fields: **Name**, **Phone** (min 10 digits).
-- Optional fields: Email (validated format), Company, Notes.
-- Duplicate check: if the same name **and** phone already exist, save is blocked and a snackbar is shown.
-- Tap **Save** (top-right) to persist. Tap **←** to discard.
-
-### Edit Contact
-- Same form as Add, pre-filled with existing data.
-- Duplicate check excludes the contact being edited (so it doesn't flag itself).
-
-### Delete Contact
-- Confirmation dialog: **Cancel** or **Delete**.
-- On confirm, contact is permanently removed and both tabs refresh instantly.
+```
+https://github.com/dyash2/contacts_app/releases/download/v1.0.0/app-release.apk
+```
 
 ---
 
-## 📸 Screenshots & Video
-
-> Place screenshots in a `/screenshots/` folder and update the paths below.
+# 📸 Screenshots
 
 | Splash | Contacts | Favorites | Profile | Add Contact | Delete Dialog |
 |---|---|---|---|---|---|
 | ![splash](screenshots/splash.png) | ![contacts](screenshots/contacts.png) | ![favorites](screenshots/favorites.png) | ![profile](screenshots/profile.png) | ![add](screenshots/add.png) | ![delete](screenshots/delete.png) |
 
+---
+
+# 🎥 App Demo
+
 https://github.com/user-attachments/assets/ce9c739e-3c85-4e0a-b545-b789825f6f3e
 
 ---
+
+# 👨‍💻 Author
+
+**Yash Debnath**
+
+Flutter Developer
